@@ -26,7 +26,7 @@ server.get("/", (requisicao, resposta) =>{
         <body>
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="/">Navbar</a>
+                    <a class="navbar-brand" href="/">Menu</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                     </button>
@@ -69,38 +69,19 @@ server.get("/cadastroFornecedor", (requisicao,resposta) =>{
         <body>
             <div class="container">
                 <h1 class="text-center border m-3 p-3 bg-light">Cadastro de Fornecedor </h1>
-                <form method="POST" action="/adicionarFornecedor" class="row g-3 needs-validation m-3 p-3 bg-light" novalidate>
+                <form method="POST" action="/adicionarFornecedor" class="row g-3 needs-validation m-3 p-3 bg-light">
                 <div class="col-md-4">
                     <label for="nomeFantasia" class="form-label">Nome Fantasia</label>
                     <input type="text" class="form-control" id="nomeFantasia" name="nomeFantasia" value="">
-                    <div class="valid-feedback">
-                        Por Favor, você deve informar o nome fantasia.
-                    </div>
                 </div>
                 <div class="col-md-4">
                     <label for="razaoSocial" class="form-label">Razão Social</label>
                     <input type="text" class="form-control" id="razaoSocial" name="razaoSocial" value="">
-                    <div class="valid-feedback">
-                        Por favor, você deve informar a razão social.
-                    </div>
                 </div>
                   <div class="col-md-4">
                       <label for="CNPJ" class="form-label">CNPJ</label>
                       <input type="text" class="form-control" id="CNPJ" name="CNPJ" placeholder="00.000.000/0000-00" maxlength="14">
-                  </div>
-                  <div class="col-md-4">
-                      <label for="inscricao" class="form-label">Inscrição Estadual</label>
-                      <input type="text" class="form-control" id="inscricao" name="inscricao"  maxlength="12">
-                  </div>
-                  <div class="col-md-4">
-                      <label for="segmento" class="form-label">Segmento</label>
-                      <select class="form-select" id="segmento" name="segmento" >
-                          <option>Distribuidora</option>
-                          <option>Laboratório</option>
-                          <option>Farmoquímico</option>
-                          <option>Outros</option>
-                      </select>
-                    </div>         
+                  </div>      
                 <div class="row g-3">
                     <div class="col-md-3">
                         <label for="CEP" class="form-label">CEP</label>
@@ -159,6 +140,14 @@ server.get("/cadastroFornecedor", (requisicao,resposta) =>{
                                 <option value="TO">Tocantins (TO)</option>
                             </select>
                     </div>
+                    <div class="col-md-4">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="text" id="email" name="email"  class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="text" id="telefone" name="telefone"  class="form-control">
+                    </div>
                 </div>
                 <div class="col-12">
                     <br><button class="btn btn-primary" type="submit">Cadastrar</button>
@@ -177,8 +166,6 @@ server.post("/adicionarFornecedor",(requisicao, resposta) =>{
     const nomeFantasia = requisicao.body.nomeFantasia;
     const razaoSocial = requisicao.body.razaoSocial;
     const CNPJ = requisicao.body.CNPJ;
-    const inscricao = requisicao.body.inscricao;
-    const segmento = requisicao.body.segmento;
     const CEP = requisicao.body.CEP;
     const logradouro = requisicao.body.logradouro;
     const numero = requisicao.body.numero;
@@ -186,9 +173,198 @@ server.post("/adicionarFornecedor",(requisicao, resposta) =>{
     const bairro = requisicao.body.bairro;
     const cidade = requisicao.body.cidade;
     const UF = requisicao.body.UF;
+    const email = requisicao.body.email;
+    const telefone = requisicao.body.telefone;
 
-    listaFornecedor.push({nomeFantasia,razaoSocial,CNPJ,inscricao,segmento,CEP,logradouro,numero,complemento,bairro,cidade,UF});
+    if (nomeFantasia && razaoSocial && CNPJ && CEP && logradouro && numero && complemento && bairro && cidade && UF && email && telefone) {
+    listaFornecedor.push({nomeFantasia,razaoSocial,CNPJ,CEP,logradouro,numero,complemento,bairro,cidade,UF,email,telefone});
     resposta.redirect("/listaFornecedores");
+}
+else{
+    let conteudo = `
+        <!doctype html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Cadastro Fornecedor</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        </head>
+        <body>
+            <div class="container">
+                <h1 class="text-center border m-3 p-3 bg-light">Cadastro de Fornecedor </h1>
+                <form method="POST" action="/adicionarFornecedor" class="row g-3 needs-validation m-3 p-3 bg-light">
+                <div class="col-md-4">
+                    <label for="nomeFantasia" class="form-label">Nome Fantasia</label>
+                    <input type="text" class="form-control" id="nomeFantasia" name="nomeFantasia" value="">
+                </div>`;
+            if(!nomeFantasia){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o nome fantasia </p>
+                </div>`;
+            };
+            conteudo +=`
+                <div class="col-md-4">
+                    <label for="razaoSocial" class="form-label">Razão Social</label>
+                    <input type="text" class="form-control" id="razaoSocial" name="razaoSocial" value="">
+                </div>`;
+            if(!razaoSocial){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe a Razão Social </p>
+                </div>`;
+            };
+            conteudo +=`
+                  <div class="col-md-4">
+                      <label for="CNPJ" class="form-label">CNPJ</label>
+                      <input type="text" class="form-control" id="CNPJ" name="CNPJ" placeholder="00.000.000/0000-00" maxlength="14">
+                  </div>`;
+            if(!CNPJ){
+            conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o CNPJ </p>
+                </div>`;
+            };
+            conteudo +=`      
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="CEP" class="form-label">CEP</label>
+                        <input type="text" id="CEP" name="CEP"  class="form-control" placeholder="00000-000" maxlength="8">
+                    </div>`;
+            if(!CEP){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o CEP do fornecedor </p>
+                </div>`;
+            };
+            conteudo +=`
+                    <div class="col-md-5">
+                        <label for="logradouro" class="form-label">Logradouro</label>
+                        <input type="text" id="logradouro" name="logradouro" class="form-control">
+                    </div>`;
+            if(!logradouro){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o Logradouro do fornecedor </p>
+                </div>`;
+            };
+            conteudo +=`
+                    <div class="col-md-2">
+                        <label for="numero" class="form-label">Número</label>
+                        <input type="text" id="numero" name="numero" class="form-control">
+                    </div>`;
+            if(!numero){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o Número </p>
+                </div>`;
+            };
+            conteudo +=`
+                    <div class="col-md-2">
+                        <label for="complemento" class="form-label">Complemento</label>
+                        <input type="text" id="complemento" name="complemento"  class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="bairro" class="form-label">Bairro</label>
+                        <input type="text" id="bairro" name="bairro"  class="form-control">
+                    </div>`;
+            if(!bairro){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o Bairro do fornecedor </p>
+                </div>`;
+            };
+            conteudo +=`
+                    <div class="col-md-4">
+                        <label for="cidade" class="form-label">Cidade</label>
+                        <input type="text" id="cidade" name="cidade"  class="form-control">
+                    </div>`;
+            if(!cidade){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe a cidade do fornecedor </p>
+                </div>`;
+            };
+            conteudo +=`
+
+                    <div class="col-md-4">
+                        <label for="UF" class="form-label">Estado (UF)</label>
+                            <select class="form-select" id="UF" name="UF">
+                                <option value="">Selecione o estado...</option>
+                                <option value="AC">Acre (AC)</option>
+                                <option value="AL">Alagoas (AL)</option>
+                                <option value="AP">Amapá (AP)</option>
+                                <option value="AM">Amazonas (AM)</option>
+                                <option value="BA">Bahia (BA)</option>
+                                <option value="CE">Ceará (CE)</option>
+                                <option value="DF">Distrito Federal (DF)</option>
+                                <option value="ES">Espírito Santo (ES)</option>
+                                <option value="GO">Goiás (GO)</option>
+                                <option value="MA">Maranhão (MA)</option>
+                                <option value="MT">Mato Grosso (MT)</option>
+                                <option value="MS">Mato Grosso do Sul (MS)</option>
+                                <option value="MG">Minas Gerais (MG)</option>
+                                <option value="PA">Pará (PA)</option>
+                                <option value="PB">Paraíba (PB)</option>
+                                <option value="PR">Paraná (PR)</option>
+                                <option value="PE">Pernambuco (PE)</option>
+                                <option value="PI">Piauí (PI)</option>
+                                <option value="RJ">Rio de Janeiro (RJ)</option>
+                                <option value="RN">Rio Grande do Norte (RN)</option>
+                                <option value="RS">Rio Grande do Sul (RS)</option>
+                                <option value="RO">Rondônia (RO)</option>
+                                <option value="RR">Roraima (RR)</option>
+                                <option value="SC">Santa Catarina (SC)</option>
+                                <option value="SP">São Paulo (SP)</option>
+                                <option value="SE">Sergipe (SE)</option>
+                                <option value="TO">Tocantins (TO)</option>
+                            </select>
+                    </div>`;
+            if(!UF){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o estado do fornecedor </p>
+                </div>`;
+            };
+            conteudo +=`
+                    <div class="col-md-4">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="text" id="email" name="email"  class="form-control">
+                    </div>`;
+            if(!email){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o E-mail do fornecedor </p>
+                </div>`;
+            };
+            conteudo +=`
+                    <div class="col-md-4">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="text" id="telefone" name="telefone"  class="form-control">
+                    </div>`;
+            if(!telefone){
+                conteudo += `
+                <div>
+                    <p class="text-danger">Porfavor, informe o Telefone do fornecedor </p>
+                </div>`;
+            };
+            conteudo +=`
+                </div>
+                <div class="col-12">
+                    <br><button class="btn btn-primary" type="submit">Cadastrar</button>
+                    <a class="btn btn-secondary" href="/">Voltar</a>
+                </div>
+            </div>
+            </form>
+        </div>     
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        </body>
+</html>
+`;
+
+    resposta.send(conteudo)
+}
 });
 
 server.get("/listaFornecedores", (requisicao, resposta) => {
