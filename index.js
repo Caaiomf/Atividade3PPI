@@ -128,7 +128,7 @@ server.post("/", (requisicao, resposta) => {
                             <p class="text-danger">Porfavor, informe o seu Usuario </p>
                         </div>`;
                         };
-                    `</div>
+                    login +=`</div>
                     <div class="mb-3">
                         <label for="senha" class="form-label">Senha</label>
                         <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha">`;         
@@ -138,7 +138,7 @@ server.post("/", (requisicao, resposta) => {
                             <p class="text-danger">Porfavor, Informe sua senha</p>
                         </div>`;
                         };
-                    `</div>
+                    login +=`</div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Entrar</button>
                         <a href="/" class="btn btn-secondary">Voltar</a>
