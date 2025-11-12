@@ -121,13 +121,13 @@ server.post("/", (requisicao, resposta) => {
                 <form method="POST" action="/" class="m-3 p-4 bg-light rounded shadow-sm col-md-6 mx-auto">
                     <div class="mb-3">
                         <label for="usuario" class="form-label">Usuário</label>
-                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Digite seu usuário">`;
+                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Digite seu usuário" value=${usuario}>`;
                     if(!usuario)
-                    { login +=`
+                        {login +=`
                         <div>
                             <p class="text-danger">Porfavor, informe o seu Usuario </p>
                         </div>`;
-                    };
+                        };
                     `</div>
                     <div class="mb-3">
                         <label for="senha" class="form-label">Senha</label>
@@ -148,6 +148,7 @@ server.post("/", (requisicao, resposta) => {
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
             </body>
             </html>`;
+            resposta.send(login);
     }
 })
 
