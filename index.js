@@ -13,7 +13,6 @@ server.use(express.urlencoded({extended: true}));
 //querystring se for false
 
 server.get("/", (requisicao, resposta) =>{
-    //menu 
     resposta.send(`  
         <!doctype html>
         <html lang="pt-br">
@@ -53,7 +52,7 @@ server.get("/", (requisicao, resposta) =>{
                 <div class="container">
                 <h1 class="text-center border m-3 p-3 bg-light">Login</h1>
 
-                <form method="POST" action="/cadastroFornecedor" class="m-3 p-4 bg-light rounded shadow-sm col-md-6 mx-auto">
+                <form method="POST" action="/" class="m-3 p-4 bg-light rounded shadow-sm col-md-6 mx-auto">
                     <div class="mb-3">
                         <label for="usuario" class="form-label">Usuário</label>
                         <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Digite seu usuário">
@@ -74,6 +73,83 @@ server.get("/", (requisicao, resposta) =>{
             </html>
         `);
 });
+
+server.post("/", (requisicao, resposta) => {
+    const usuario = requisicao.body.usuario;
+    const senha = requisicao.body.senha;
+    if(usuario && senha)
+        resposta.redirect("/cadastroFornecedor");
+    else
+    {let login =`<!doctype html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Menu</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        </head>
+        <body>
+                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">Menu</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Cadastro
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-item"><a class="nav-link active" href="/cadastroFornecedor">Cadastro Fornecedor</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="/listaFornecedores">Listar Fornecedores</a></li>
+                        </ul>
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="/" href="/logout">Sair</a>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+                </nav>
+                <div class="container">
+                <h1 class="text-center border m-3 p-3 bg-light">Login</h1>
+
+                <form method="POST" action="/" class="m-3 p-4 bg-light rounded shadow-sm col-md-6 mx-auto">
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label">Usuário</label>
+                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Digite seu usuário">`;
+                    if(!usuario)
+                    { login +=`
+                        <div>
+                            <p class="text-danger">Porfavor, informe o seu Usuario </p>
+                        </div>`;
+                    };
+                    `</div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha">`;         
+                    if(!senha)
+                        {login += `
+                        <div>
+                            <p class="text-danger">Porfavor, Informe sua senha</p>
+                        </div>`;
+                        };
+                    `</div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                        <a href="/" class="btn btn-secondary">Voltar</a>
+                    </div>
+                </form>
+            </div>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+            </body>
+            </html>`;
+    }
+})
 
 server.get("/cadastroFornecedor", (requisicao,resposta) =>{
         resposta.send(`
@@ -309,7 +385,13 @@ else{
                     <div class="col-md-2">
                         <label for="complemento" class="form-label">Complemento</label>
                         <input type="text" id="complemento" name="complemento"  class="form-control" value=${complemento}>
-                    </div>
+`;
+            if(!complemento){`
+                <div>
+                    <p class="text-danger">Porfavor, informe o complemento </p>
+                </div>`;
+            };
+                    `</div>
                     <div class="col-md-4">
                         <label for="bairro" class="form-label">Bairro</label>
                         <input type="text" id="bairro" name="bairro"  class="form-control" value=${bairro}>
